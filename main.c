@@ -6,7 +6,7 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:34:47 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/28 23:39:48 by gpetrov          ###   ########.fr       */
+/*   Updated: 2013/12/29 00:08:28 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,13 +132,15 @@ int		ft_ra(t_data *data)
 
 	i = 0;
 	tmp = data->l_a[0];
-	while (data->l_a[i])
+	while (i <= data->size_a)
 	{
 		data->l_a[i] = data->l_a[i + 1];
 		i++;
 	}
-	data->l_a[i - 1] = tmp;
+	data->l_a[data->size_a - 1] = tmp;
 	ft_putstr("ra ");
+	ft_putchar('\n');
+	ft_print_tab(data);
 	return (0);
 }
 
@@ -148,15 +150,16 @@ int		ft_rb(t_data *data)
 	int		tmp;
 
 	i = 0;
-	if (!data->l_b[0])
-		return (0);
-	while (data->l_b[i])
+	tmp = data->l_b[0];
+	while (i <= data->size_b)
 	{
 		data->l_b[i] = data->l_b[i + 1];
 		i++;
 	}
-	data->l_b[i - 1] = tmp;
+	data->l_b[data->size_b - 1] = tmp;
 	ft_putstr("rb ");
+	ft_putchar('\n');
+	ft_print_tab(data);
 	return (0);
 }
 
@@ -173,18 +176,17 @@ int		ft_rra(t_data *data)
 	int		i;
 	int		tmp;
 
-	i = 0;
-	while (data->l_a[i])
-		i++;
-	tmp = data->l_a[i - 1];
-	i--;
-	while (data->l_a[i])
+	i = data->size_a;
+	tmp = data->l_a[data->size_a - 1];
+	while (i >= 0)
 	{
 		data->l_a[i] = data->l_a[i - 1];
 		i--;
 	}
 	data->l_a[0] = tmp;
 	ft_putstr("rra ");
+	ft_putchar('\n');
+	ft_print_tab(data);
 	return (0);
 }
 
@@ -193,18 +195,17 @@ int		ft_rrb(t_data *data)
 	int		i;
 	int		tmp;
 
-	i = 0;
-	while (data->l_b[i])
-		i++;
-	tmp = data->l_b[i - 1];
-	i--;
-	while (data->l_b[i])
+	i = data->size_b;
+	tmp = data->l_b[data->size_b - 1];
+	while (i >= 0)
 	{
 		data->l_b[i] = data->l_b[i - 1];
 		i--;
 	}
 	data->l_b[0] = tmp;
 	ft_putstr("rrb ");
+	ft_putchar('\n');
+	ft_print_tab(data);
 	return (0);
 }
 
@@ -323,6 +324,9 @@ int		main(int ac, char **av)
 		ft_pa(&data);
 		ft_pa(&data);
 		ft_pa(&data);
+		ft_rra(&data);
+		ft_rra(&data);
+		/* ft_ra(&data); */
 		ft_putchar('\n');
 		ft_print_tab(&data);
 	}
