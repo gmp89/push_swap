@@ -6,18 +6,29 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:34:47 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/29 02:27:29 by gmp              ###   ########.fr       */
+/*   Updated: 2013/12/29 18:58:39 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include <time.h> /* test */
+
+int rand_int(int nb, int a, int b)
+{
+	return ((nb % (b - a)) + a);
+}
 
 int		ft_make_list(t_data *data, char **av)
 {
+	int		size;
+
+	size = 20;
 	data->i = 1;
 	data->j = 1;
 	while (av[data->j] != 0)
 		data->j++;
+	srand(time(NULL)); /* test */
+	data->j = size; /* test */
 	data->size = data->j - 1;
 	data->size_a = data->size;
 	data->size_init_a = data->size_a;
@@ -25,12 +36,13 @@ int		ft_make_list(t_data *data, char **av)
 	data->l_a = (int *)malloc(sizeof(int) * data->size);
 	data->l_b = (int *)malloc(sizeof(int) * data->size);
 	data->j = 0;
-	while (av[data->i] != 0)
+/*	while (av[data->i] != 0)*/
+	while (data->j < size) /* test */
 	{
-		data->l_a[data->j] = ft_atoi(av[data->i]);
+		/*	data->l_a[data->j] = ft_atoi(av[data->i]);*/
+		data->l_a[data->j] = rand_int(rand(), -20, 200); /* test */
 		data->i++;
 		data->j++;
-
 	}
 	return (0);
 }
@@ -86,8 +98,18 @@ int		ft_pa(t_data *data)
 	data->l_a[data->size_a] = tmp2;
 	data->l_a[0] = data->l_b[0];
 	i = 0;
-	while (i <= data->size_b)
+	ft_putstr("i : ");
+	ft_putnbr(i);
+	ft_putstr(", size : ");
+	ft_putnbr(data->size_b);
+	ft_putstr("\n");
+	while (i < data->size_b)
 	{
+		ft_putstr("i : ");
+		ft_putnbr(i);
+		ft_putstr(", size : ");
+		ft_putnbr(data->size_b);
+		ft_putstr("\n");
 		data->l_b[i] = data->l_b[i + 1];
 		i++;
 	}
@@ -269,6 +291,51 @@ int		ft_sort_is_ok(t_data *data)
 	return (0);
 }
 
+int		ft_sort_b_is_ok(t_data *data)
+{
+	int		i;
+
+	i = data->size_b - 1;
+	while (i > 0)
+	{
+		if (data->l_b[i - 1] > data->l_b[i])
+			i--;
+		else
+		{
+			ft_putstr("tab b non trie \n");
+			return (-1);
+		}
+	}
+	ft_putstr("tab b trie \n");
+	return (0);
+}
+
+int		ft_sort_is(t_data *data)
+{
+	int		i;
+
+	i = data->size_a - 1;
+	while (i >= 0)
+	{
+		if (data->l_a[i - 1] < data->l_a[i])
+			i--;
+		else
+			return (-1);
+	}
+	return (0);
+}
+
+void	ft_sort_b(t_data *data)
+{
+	if (data->size_b == 1)
+		return ;
+	if (data->l_b[data->size_b] && data->l_b[0] < data->l_b[data->size_b - 1])
+		ft_rb(data);
+	else if (data->l_b[1] && data->l_b[0] < data->l_b[1])
+		ft_sb(data);
+}
+
+
 int		ft_sort(t_data *data)
 {
 	int		max;
@@ -278,30 +345,32 @@ int		ft_sort(t_data *data)
 	i = 0;
 	j = 0;
 	max = ft_count(data);
-	while (ft_sort_is_ok(data) != 0)
+	ft_print_tab(data);
+	while (ft_sort_b_is_ok(data) || data->size_a > 1)
 	{
-		if (data->l_a[0] > data->l_a[1] || data->l_a[0] > data->l_a[data->size_a])
+		ft_print_tab(data);
+		/* usleep(400000); */
+		if (data->l_a[0] > data->l_a[1])
+			ft_sa(data);
+		else if (data->l_a[0] > data->l_a[data->size_a])
+			ft_rra(data);
+		ft_pb(data);
+		while (ft_sort_b_is_ok(data))
 		{
-			if (data->l_a[0] > data->l_a[1])
-				ft_sa(data);
-			if (data->l_a[0] > data->l_a[data->size_a])
-				ft_rra(data);
-		}
-		else if (data->l_a[0] < data->l_a[1] && data->l_a[0] < data->l_a[data->size_a] && ft_sort_is_ok(data) == -1)
-		{
-			ft_pb(data);
-			if (data->l_b[1] && data->l_b[0] < data->l_b[1])
-				ft_sb(data);
-		}
-		else
-		{
-			while (data->l_a[i])
-			{
-				ft_pa(data);
-				i++;
-			}
+			ft_sort_b(data);
+			ft_pa(data);
 		}
 		ft_print_tab(data);
+	}
+	ft_putstr("fin de tri\n");
+	while (i < data->size_b)
+	{
+		ft_putstr("t : i : ");
+		ft_putnbr(i);
+		ft_putstr(", size : ");
+		ft_putnbr(data->size_b);
+		ft_putstr("\n");
+		ft_pa(data);
 	}
 	return (0);
 }
@@ -331,6 +400,7 @@ int		main(int ac, char **av)
 		/* ft_rra(&data); */
 		/* ft_ra(&data); */
 		/* ft_putchar('\n'); */
+		ft_putstr("fin de programme :\n");
 		ft_print_tab(&data);
 	}
 	return (0);
