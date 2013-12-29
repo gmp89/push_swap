@@ -6,7 +6,7 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:41:38 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/29 21:01:43 by gpetrov          ###   ########.fr       */
+/*   Updated: 2013/12/29 22:46:34 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct		s_data
 	int				size_b;
 	int				size_init_a;
 	int				print;
+	int				k;
 }					t_data;
 
 int		ft_make_list(t_data *data, char **av);
@@ -46,5 +47,6 @@ void	ft_print_name(t_data *data, char *str);
 void	ft_sort_b(t_data *data);
 int		ft_sort_is(t_data *data);
 int		ft_sort_b_is_ok(t_data *data);
+int		ft_string_is_nb(char *str);
 
 #endif

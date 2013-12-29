@@ -6,7 +6,7 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:34:47 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/29 21:25:48 by gpetrov          ###   ########.fr       */
+/*   Updated: 2013/12/29 22:44:05 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int		ft_string_is_nb(char *str)
 	int		i;
 
 	i = 0;
+	if (str[0] == '-' && str[1])
+		i++;
 	while (str[i] != 0)
 	{
 		if (!ft_isdigit(str[i]))
@@ -79,28 +81,28 @@ int		ft_string_is_nb(char *str)
 int		main(int ac, char **av)
 {
 	t_data		data;
-	int			i;
 
-	i = 1;
-	if (ac >= 2)
+	data.k = 1;
+	ac = ac;
+	while (av[data.k])
 	{
-		while (av[i])
+		if (ft_string_is_nb(av[data.k]) == -1)
 		{
-			if (ft_string_is_nb(av[i]) == -1)
-			{
-				ft_putstr("Error\n");
-				return (0);
-			}
-			i++;
-		}
-		data.print = 1;
-		ft_make_list(&data, av);
-		if (ft_sort_is_ok(&data) == 0)
+			ft_putstr("Error\n");
 			return (0);
-		ft_sort(&data);
-		ft_putchar('\n');
-		free(data.l_a);
-		free(data.l_b);
+		}
+		data.k++;
 	}
+	data.print = 1;
+	ft_make_list(&data, av);
+	if (ft_sort_is_ok(&data) == 0)
+	{
+		ft_putchar('\n');
+		return (0);
+	}
+	ft_sort(&data);
+	ft_putchar('\n');
+	free(data.l_a);
+	free(data.l_b);
 	return (0);
 }
