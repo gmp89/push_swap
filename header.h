@@ -6,7 +6,7 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:41:38 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/28 22:21:11 by gpetrov          ###   ########.fr       */
+/*   Updated: 2013/12/29 02:23:42 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_data
 	int				size;
 	int				size_a;
 	int				size_b;
+	int				size_init_a;
 }					t_data;
 
 int		ft_make_list(t_data *data, char **av);

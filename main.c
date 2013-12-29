@@ -6,7 +6,7 @@
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/27 19:34:47 by gpetrov           #+#    #+#             */
-/*   Updated: 2013/12/29 00:08:28 by gpetrov          ###   ########.fr       */
+/*   Updated: 2013/12/29 02:27:29 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		ft_make_list(t_data *data, char **av)
 		data->j++;
 	data->size = data->j - 1;
 	data->size_a = data->size;
+	data->size_init_a = data->size_a;
 	data->size_b = 0;
 	data->l_a = (int *)malloc(sizeof(int) * data->size);
 	data->l_b = (int *)malloc(sizeof(int) * data->size);
@@ -255,14 +256,16 @@ int		ft_sort_is_ok(t_data *data)
 {
 	int		i;
 
-	i = data->size;
+	i = data->size_a - 1;
 	while (i >= 0)
 	{
-		if (data->l_a[i - 1] && data->l_a[i - 1] < data->l_a[i])
+		if (data->l_a[i - 1] < data->l_a[i])
 			i--;
 		else
 			return (-1);
 	}
+	if (data->size_a != data->size_init_a)
+		return (-1);
 	return (0);
 }
 
@@ -277,14 +280,14 @@ int		ft_sort(t_data *data)
 	max = ft_count(data);
 	while (ft_sort_is_ok(data) != 0)
 	{
-		if (data->l_a[0] > data->l_a[1] || data->l_a[0] > data->l_a[max])
+		if (data->l_a[0] > data->l_a[1] || data->l_a[0] > data->l_a[data->size_a])
 		{
 			if (data->l_a[0] > data->l_a[1])
 				ft_sa(data);
-			if (data->l_a[0] > data->l_a[max])
+			if (data->l_a[0] > data->l_a[data->size_a])
 				ft_rra(data);
 		}
-		else if (data->l_a[0] < data->l_a[1] && data->l_a[0] < data->l_a[max] && ft_sort_is_ok(data) == -1)
+		else if (data->l_a[0] < data->l_a[1] && data->l_a[0] < data->l_a[data->size_a] && ft_sort_is_ok(data) == -1)
 		{
 			ft_pb(data);
 			if (data->l_b[1] && data->l_b[0] < data->l_b[1])
@@ -315,19 +318,19 @@ int		main(int ac, char **av)
 			ft_print_tab(&data);
 			return (0);
 		}
-		/* ft_sort(&data); */
-		ft_pb(&data);
-		ft_pb(&data);
-		ft_pb(&data);
-		ft_pb(&data);
-		ft_pa(&data);
-		ft_pa(&data);
-		ft_pa(&data);
-		ft_pa(&data);
-		ft_rra(&data);
-		ft_rra(&data);
+		ft_sort(&data);
+		/* ft_pb(&data); */
+		/* ft_pb(&data); */
+		/* ft_pb(&data); */
+		/* ft_pb(&data); */
+		/* ft_pa(&data); */
+		/* ft_pa(&data); */
+		/* ft_pa(&data); */
+		/* ft_pa(&data); */
+		/* ft_rra(&data); */
+		/* ft_rra(&data); */
 		/* ft_ra(&data); */
-		ft_putchar('\n');
+		/* ft_putchar('\n'); */
 		ft_print_tab(&data);
 	}
 	return (0);
